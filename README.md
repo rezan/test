@@ -2,9 +2,9 @@
 vmod_kvstore
 ============
 
-----------------------
+---------------
 Varnish kvstore
-----------------------
+---------------
 
 :Author: Reza Naghibi
 :Date: 2015-06-14
@@ -58,7 +58,6 @@ key
         The key name.
 default
         The default value if not found.
-
 
 EXAMPLE
 =======
