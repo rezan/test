@@ -1,90 +1,45 @@
 ============
-vmod_kvstore
+vmod_example
 ============
 
----------------
-Varnish kvstore
----------------
+----------------------
+Varnish Example Module
+----------------------
 
-:Author: Reza Naghibi
-:Date: 2015-06-14
-:Version: 0.1
+:Date: 2015-03-03
+:Version: 1.0
 :Manual section: 3
 
 SYNOPSIS
 ========
 
-import kvstore;
+import example;
 
 DESCRIPTION
 ===========
 
-Key value hashtable for Varnish.
+Example Varnish vmod demonstrating how to write an out-of-tree Varnish vmod.
+
+Implements the traditional Hello World as a vmod.
 
 FUNCTIONS
 =========
 
-init
-----
+hello
+-----
 
 Prototype
         ::
 
-                VOID init(INT name, INT buckets)
-Description
-        Initializes a kvstore.
+                hello(STRING S)
 Return value
-        None
-name
-        The name of the kvstore instance.
-        By default, values from 0 to 10 are supported. The name must be used on all calls which reference this instance.
-buckets
-        The number of hash buckets to create (roughly 1 per key).
-
-get
----
-
-Prototype
+	STRING
+Description
+	Returns "Hello, " prepended to S
+Example
         ::
 
-                STRING get(INT name, STRING key, STRING default)
-Description
-        Get a key from the kvstore. If its not found, default is returned.
-Return value
-        The key value.
-name
-        The name of the kvstore instance.
-key
-        The key name.
-default
-        The default value if not found.
-
-EXAMPLE
-=======
-
-```vcl
-
-import kvstore;
-
-vcl_init
-{
-  kvstore.init(0, 25000, false);
-}
-
-vcl_recv
-{
-  //use as a 10 second cache
-  set req.http.cachevalue = kvstore.get(0, "somekey", "");
-  if(req.http.cachevalue == "")
-  {
-    set req.http.cachevalue = "somevalue";
-    kvstore.set(0, "somekey", req.http.cachevalue, 10);
-  }
-}
-
-
-```
-
+                set resp.http.hello = example.hello("World");
 
 INSTALLATION
 ============
@@ -103,7 +58,7 @@ Usage::
 
 If you have installed Varnish to a non-standard directory, call
 ``autogen.sh`` and ``configure`` with ``PKG_CONFIG_PATH`` pointing to
-the appropriate path. For kvstore, when varnishd configure was called
+the appropriate path. For example, when varnishd configure was called
 with ``--prefix=$PREFIX``, use
 
  PKG_CONFIG_PATH=${PREFIX}/lib/pkgconfig
@@ -115,3 +70,20 @@ Make targets:
 * make install - installs your vmod.
 * make check - runs the unit tests in ``src/tests/*.vtc``
 * make distcheck - run check and prepare a tarball of the vmod.
+
+In your VCL you could then use this vmod along the following lines::
+
+        import example;
+
+        sub vcl_deliver {
+                # This sets resp.http.hello to "Hello, World"
+                set resp.http.hello = example.hello("World");
+        }
+
+COMMON PROBLEMS
+===============
+
+* configure: error: Need varnish.m4 -- see README.rst
+
+  Check if ``PKG_CONFIG_PATH`` has been set correctly before calling
+  ``autogen.sh`` and ``configure``
