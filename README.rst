@@ -62,29 +62,25 @@ default
 
 EXAMPLE
 =======
+::
 
-```vcl
+        import kvstore;
 
-import kvstore;
+        vcl_init
+        {
+          kvstore.init(0, 25000, false);
+        }
 
-vcl_init
-{
-  kvstore.init(0, 25000, false);
-}
-
-vcl_recv
-{
-  //use as a 10 second cache
-  set req.http.cachevalue = kvstore.get(0, "somekey", "");
-  if(req.http.cachevalue == "")
-  {
-    set req.http.cachevalue = "somevalue";
-    kvstore.set(0, "somekey", req.http.cachevalue, 10);
-  }
-}
-
-
-```
+        vcl_recv
+        {
+          //use as a 10 second cache
+          set req.http.cachevalue = kvstore.get(0, "somekey", "");
+          if(req.http.cachevalue == "")
+          {
+            set req.http.cachevalue = "somevalue";
+            kvstore.set(0, "somekey", req.http.cachevalue, 10);
+          }
+        }
 
 
 INSTALLATION
