@@ -2,9 +2,9 @@
 vmod_kvstore
 ============
 
-----------------------
+---------------
 Varnish kvstore
-----------------------
+---------------
 
 :Author: Reza Naghibi
 :Date: 2015-06-14
@@ -29,7 +29,6 @@ init
 
 Prototype
         ::
-
                 VOID init(INT name, INT buckets)
 Description
         Initializes a kvstore.
