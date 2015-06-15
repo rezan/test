@@ -23,6 +23,15 @@ DESCRIPTION
 
 Key value hashtable for Varnish.
 
+TODO
+====
+
+* kvstore_get should support a default?
+* key and value lengths
+* proper way to deal with keys with expired ttls
+* a different hashing algorithm?
+* fix _KVSTORE_STANDALONE
+
 
 FUNCTIONS
 =========
